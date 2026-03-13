@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bolsa de Empleo - Inicio</title>
+</head>
+<body>
+<header>
+    <h1>Bienvenido a la Bolsa de Empleo Universitaria</h1>
+    <p>Encuentra tu próximo reto profesional.</p>
+</header>
+
+<main>
+    <section>
+        <h2>Últimos Puestos Disponibles</h2>
+
+        <ul>
+            <li th:each="puesto : ${puestos}">
+                <strong th:text="${puesto.descripcion}">Descripción del puesto</strong> <br>
+
+                🏢 Empresa: <span th:text="${puesto.empresa.nombre}">Nombre de la Empresa</span> <br>
+                💰 Salario: ₡<span th:text="${puesto.salario}">0.00</span>
+
+                <hr> </li>
+        </ul>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2026 Proyecto Progra IV</p>
+</footer>
+</body>
+</html>
