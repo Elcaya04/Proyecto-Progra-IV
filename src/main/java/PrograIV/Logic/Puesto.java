@@ -8,25 +8,23 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Empresa {
+public class Puesto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nombre;
-    private String localizacion;
-
-    @Column(unique = true, nullable = false)
-    private String correo;
-
-    private String telefono;
-
     @Column(length = 1000)
     private String descripcion;
 
-    private String clave;
+    private Double salario;
 
-    // "PENDIENTE" o "APROBADO"
-    private String estado = "PENDIENTE";
+    // "PUBLICO" o "PRIVADO"
+    private String tipo;
+
+    private Boolean activo = true;
+
+    @ManyToOne
+    @JoinColumn(name = "empresa_id", nullable = false)
+    private Empresa empresa;
 }
