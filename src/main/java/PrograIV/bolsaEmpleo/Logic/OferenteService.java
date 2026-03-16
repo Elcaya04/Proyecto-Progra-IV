@@ -47,4 +47,15 @@ public class OferenteService {
     public void agregarHabilidad(OferenteCaracteristica habilidad) {
         habilidadesRepository.save(habilidad);
     }
+    public void guardarRutaCurriculo(String email, String nombreArchivo) {
+        Oferente oferente = oferenteRepository.findById(email)
+                .orElseThrow(() -> new IllegalArgumentException("Oferente no encontrado"));
+        oferente.setPdfCurriculo(nombreArchivo);
+        oferenteRepository.save(oferente);
+    }
+
+    public List<Oferente> buscarCandidatos(Integer puestoId) {
+        // Por ahora retorna todos los aprobados, la lógica de coincidencia va después
+        return oferenteRepository.findByEstado(1);
+    }
 }

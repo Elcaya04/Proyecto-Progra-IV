@@ -52,4 +52,10 @@ public class PuestoService {
     public List<PuestoCaracteristica> listarRequisitos(Integer puestoId) {
         return puestoCaracteristicaRepository.findByPuestoId(puestoId);
     }
+    public List<Puesto> buscarPorCaracteristicas(List<Integer> caracteristicaIds) {
+        if (caracteristicaIds == null || caracteristicaIds.isEmpty()) {
+            return listarPublicos();
+        }
+        return puestoRepository.findByCaracteristicas(caracteristicaIds);
+    }
 }
