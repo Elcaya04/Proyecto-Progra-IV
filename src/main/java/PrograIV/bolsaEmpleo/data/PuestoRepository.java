@@ -13,4 +13,5 @@ public interface PuestoRepository extends JpaRepository<Puesto, Integer> { // <E
     // Al nombrar el método así, Spring crea automáticamente el SQL:
     // SELECT * FROM puesto WHERE activo = true AND tipo = ?
     List<Puesto> findByActivoTrueAndTipo(String tipo);
+    List<Puesto> findByEmpresaEmail(String email);
 }

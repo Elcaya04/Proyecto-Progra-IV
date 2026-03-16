@@ -12,10 +12,11 @@ public class Caracteristica {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private String nombre;
 
+    // Relación jerárquica: una característica puede tener un padre
     @ManyToOne
     @JoinColumn(name = "padre_id")
     private Caracteristica padre;

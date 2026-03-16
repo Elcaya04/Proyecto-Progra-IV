@@ -1,34 +1,34 @@
 package PrograIV.bolsaEmpleo.Logic;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
-@Table(name = "oferente")
-// ¡CLAVE! Enlazamos el ID de esta tabla con el "email" de la tabla padre Usuario
-@PrimaryKeyJoinColumn(name = "usuario_email")
-@Getter @Setter @NoArgsConstructor
-public class Oferente extends Usuario { // La palabra extends aplica la herencia
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Oferente extends Usuario {
 
-    //NO hay @Id aquí. Lo hereda de Usuario.
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(nullable = false, unique = true, length = 50)
     private String identificacion;
-
-    @Column(nullable = false, length = 50)
     private String nombre;
-
-    @Column(nullable = false, length = 100)
-    private String apellidos;
-
-    @Column(length = 50)
+    private String primerApellido;
     private String nacionalidad;
+    private String telefono;
 
-    @Column(columnDefinition = "TEXT")
-    private String residencia;
+    @Column(unique = true, nullable = false)
+    private String correo;
 
-    @Column(name = "pdf_curriculo", length = 255)
-    private String pdfCurriculo; // Solo guardamos el nombre del archivo PDF
+    private String lugarResidencia;
+    private String clave;
+
+    // Ruta del archivo PDF del currículo guardado en el servidor
+    private String rutaCurriculo;
+
+    // "PENDIENTE" o "APROBADO"
+    private String estado = "PENDIENTE";
 }
