@@ -50,7 +50,7 @@ public class OferenteService {
     public void guardarRutaCurriculo(String email, String nombreArchivo) {
         Oferente oferente = oferenteRepository.findById(email)
                 .orElseThrow(() -> new IllegalArgumentException("Oferente no encontrado"));
-        oferente.setPdfCurriculo(nombreArchivo);
+        oferente.setRutaCurriculo(nombreArchivo);
         oferenteRepository.save(oferente);
     }
 
