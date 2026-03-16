@@ -1,4 +1,5 @@
 package PrograIV.bolsaEmpleo.Logic;
+
 import PrograIV.bolsaEmpleo.data.PuestoCaracteristicaRepository;
 import PrograIV.bolsaEmpleo.data.PuestoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,22 +38,24 @@ public class PuestoService {
         puestoRepository.save(puesto);
     }
 
-    public void desactivar(Integer id) {
+    public void desactivar(Long id) { // Puede quedarse como minúscula si no se usa en listas
         Puesto puesto = puestoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Puesto no encontrado"));
         puesto.setActivo(false);
         puestoRepository.save(puesto);
     }
 
-    public Puesto buscarPorId(Integer id) {
+    public Puesto buscarPorId(Long id) {
         return puestoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Puesto no encontrado"));
     }
 
-    public List<PuestoCaracteristica> listarRequisitos(Integer puestoId) {
+    public List<PuestoCaracteristica> listarRequisitos(Long puestoId) {
         return puestoCaracteristicaRepository.findByPuestoId(puestoId);
     }
-    public List<Puesto> buscarPorCaracteristicas(List<Integer> caracteristicaIds) {
+
+    // 👇 Corregido el List<long> a List<Long> 👇
+    public List<Puesto> buscarPorCaracteristicas(List<Long> caracteristicaIds) {
         if (caracteristicaIds == null || caracteristicaIds.isEmpty()) {
             return listarPublicos();
         }

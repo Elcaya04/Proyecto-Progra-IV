@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Administrador</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{layout :: navegacion}"></div>
+
+<main class="dashboard-container text-center">
+    <header class="page-header mb-3">
+        <h1 class="page-title">Panel de Control - Admin</h1>
+        <p class="page-subtitle">Gestiona las solicitudes de acceso y configuraciones del sistema.</p>
+    </header>
+
+    <div class="card-grid justify-content-center gap-3">
+
+        <div class="card stat-card">
+            <div class="stat-icon">🏢</div>
+            <h3 class="card-title">Empresas</h3>
+            <p class="card-text text-muted-dark">Revisa y aprueba el acceso a nuevas empresas.</p>
+            <a th:href="@{/admin/empresas-pendientes}" class="btn-primary d-block">Ver pendientes</a>
+        </div>
+
+        <div class="card stat-card">
+            <div class="stat-icon">👥</div>
+            <h3 class="card-title">Oferentes</h3>
+            <p class="card-text text-muted-dark">Revisa y aprueba el acceso a nuevos oferentes.</p>
+            <a th:href="@{/admin/oferentes-pendientes}" class="btn-primary btn-info d-block">Ver pendientes</a>
+        </div>
+
+        <div class="card stat-card">
+            <div class="stat-icon">⚙️</div>
+            <h3 class="card-title">Características</h3>
+            <p class="card-text text-muted-dark">Gestiona el árbol de habilidades y requisitos.</p>
+            <a th:href="@{/admin/caracteristicas}" class="btn-primary btn-warning d-block">Gestionar</a>
+        </div>
+
+        <div class="card stat-card">
+            <div class="stat-icon">📊</div>
+            <h3 class="card-title">Reportes</h3>
+            <p class="card-text text-muted-dark">Genera informes estadísticos del sistema.</p>
+            <a th:href="@{/admin/reportes}" class="btn-primary btn-secondary d-block">Ver reportes</a>
+        </div>
+
+    </div>
+</main>
+
+<div th:replace="~{layout :: pieDePagina}"></div>
+
+</body>
+</html>

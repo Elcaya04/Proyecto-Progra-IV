@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reportes - Admin</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{layout :: navegacion}"></div>
+
+<main class="dashboard-container">
+
+    <header class="page-header text-left mb-3">
+        <h1 class="page-title">Centro de Reportes</h1>
+        <p class="page-subtitle">Generación de estadísticas e informes del sistema.</p>
+    </header>
+
+    <a th:href="@{/admin/dashboard}" class="link-back mb-2">⬅️ Volver al Dashboard</a>
+
+    <div class="card-grid">
+
+        <div class="card card-flex text-center p-2">
+            <div class="stat-icon">📄</div>
+            <h3 class="card-title">Puestos Solicitados por Mes</h3>
+            <p class="card-text">Descarga un documento PDF con el histórico de todos los puestos registrados en la plataforma, con sus respectivas fechas y salarios.</p>
+
+            <a th:href="@{/admin/reportes/puestos-pdf}" class="btn-primary btn-auto mt-2">
+                Descargar PDF 📥
+            </a>
+        </div>
+
+    </div>
+
+</main>
+
+<div th:replace="~{layout :: pieDePagina}"></div>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>Fragmentos</title>
+</head>
+<body>
+
+<nav th:fragment="navegacion" class="navbar">
+  <div class="navbar-left">
+    <span class="navbar-logo">💼</span>
+    <h2>BolsaEmpleo</h2>
+
+    <div class="nav-links" sec:authorize="!isAuthenticated()">
+      <a th:href="@{/}">Inicio</a>
+    </div>
+
+    <div class="nav-links" sec:authorize="hasRole('ADMIN')">
+      <a th:href="@{/admin/dashboard}">Dashboard</a>
+      <a th:href="@{/admin/empresas-pendientes}">Empresas Pendientes</a>
+      <a th:href="@{/admin/oferentes-pendientes}">Oferentes Pendientes</a>
+      <a th:href="@{/admin/caracteristicas}">Características</a>
+      <a th:href="@{/admin/reportes}">Reportes</a>
+    </div>
+
+    <div class="nav-links" sec:authorize="hasRole('EMPRESA')">
+      <a th:href="@{/empresa/dashboard}">Dashboard</a>
+      <a th:href="@{/empresa/puestos}">Mis Puestos</a>
+      <a th:href="@{/empresa/puestos/nuevo}">Publicar Puesto</a>
+    </div>
+
+    <div class="nav-links" sec:authorize="hasRole('OFERENTE')">
+      <a th:href="@{/oferente/dashboard}">Dashboard</a>
+      <a th:href="@{/oferente/habilidades}">Mis habilidades</a>
+      <a th:href="@{/oferente/cv}">Mi CV</a>
+      <a th:href="@{/puestos/buscar-por-caracteristicas}" class="nav-link-highlight">Buscar Empleos 🔍</a>
+    </div>
+  </div>
+
+  <div class="navbar-right">
+    <div class="nav-links" sec:authorize="!isAuthenticated()">
+      <a th:href="@{/login}">Iniciar Sesión</a>
+      <a th:href="@{/registro}">Registrarse</a>
+    </div>
+
+    <div class="navbar-right" sec:authorize="isAuthenticated()">
+      <span class="user-email" sec:authentication="name">admin@tuorg.com</span>
+      <form th:action="@{/logout}" method="post" class="m-0">
+        <button type="submit" class="btn-salir">Salir</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<footer th:fragment="pieDePagina" class="footer-container">
+  <div>
+    <strong>Bolsa de Empleo</strong><br>
+    <span class="text-muted">Total Soft Inc.</span>
+  </div>
+  <div class="footer-right">
+    <span>Contacto: info@bolsaempleo.local</span><br>
+    <span class="text-muted">Créditos: Equipo de desarrollo</span>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -7,5 +7,6 @@ import java.util.List;
 
 @Repository
 public interface PuestoCaracteristicaRepository extends JpaRepository<PuestoCaracteristica, Long> {
-    List<PuestoCaracteristica> findByPuestoId(Integer puestoId);
+    List<PuestoCaracteristica> findByPuestoId(Long puestoId);
+    List<PrograIV.bolsaEmpleo.Logic.PuestoCaracteristica> findByCaracteristicaId(Long caracteristicaId);
 }

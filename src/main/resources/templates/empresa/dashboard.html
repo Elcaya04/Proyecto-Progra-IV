@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Empresa</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{layout :: navegacion}"></div>
+
+<main class="dashboard-container">
+    <header class="page-header text-center mb-3">
+        <h1 class="page-title" th:text="${empresa.nombre} + ' - Dashboard'">Empresa - Dashboard</h1>
+        <p class="page-subtitle">Desde aquí podés administrar tus puestos y buscar candidatos.</p>
+    </header>
+
+    <div class="card-grid justify-content-center gap-3">
+        <div class="card stat-card">
+            <div class="stat-icon">💼</div>
+            <h3 class="card-title">Mis Puestos</h3>
+            <p class="card-text">Revisa los puestos que has publicado y gestiona a los candidatos.</p>
+            <a th:href="@{/empresa/puestos}" class="btn-primary btn-auto">Ver mis puestos</a>
+        </div>
+
+        <div class="card stat-card">
+            <div class="stat-icon">➕</div>
+            <h3 class="card-title">Nuevo Puesto</h3>
+            <p class="card-text">Crea una nueva oferta laboral y define las características que buscas.</p>
+            <a th:href="@{/empresa/puestos/nuevo}" class="btn-primary btn-success btn-auto">Publicar nuevo puesto</a>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{layout :: pieDePagina}"></div>
+
+</body>
+</html>

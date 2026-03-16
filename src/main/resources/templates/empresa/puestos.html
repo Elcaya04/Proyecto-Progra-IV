@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Mis Puestos - Empresa</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{layout :: navegacion}"></div>
+
+<main class="main-container">
+  <div class="section-header-flex">
+    <h2 class="section-title m-0 p-0 border-0">Mis Puestos</h2>
+    <a th:href="@{/empresa/puestos/nuevo}" class="btn-primary btn-success btn-auto">+ Publicar Puesto</a>
+  </div>
+
+  <a th:href="@{/empresa/dashboard}" class="link-back">⬅️ Volver al Dashboard</a>
+
+  <div th:if="${#lists.isEmpty(puestos)}" class="alert-info">
+    <p class="m-0">Aún no tienes puestos publicados. ¡Anímate a crear el primero!</p>
+  </div>
+
+  <table th:unless="${#lists.isEmpty(puestos)}" class="data-table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Descripción</th>
+      <th>Salario</th>
+      <th class="text-center">Estado</th>
+      <th class="text-center">Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="puesto : ${puestos}">
+      <td class="fw-bold" th:text="${puesto.id}">1</td>
+      <td th:text="${puesto.descripcion}">Full Stack Developer</td>
+      <td th:text="'₡ ' + ${puesto.salario}">2000</td>
+
+      <td class="text-center">
+        <span th:if="${puesto.activo}" class="text-success fw-bold">Activo</span>
+        <span th:unless="${puesto.activo}" class="text-muted fw-bold">Inactivo</span>
+      </td>
+
+      <td class="text-center d-flex justify-content-center gap-1">
+        <a th:href="@{/empresa/puestos/{id}/candidatos(id=${puesto.id})}" class="btn-primary btn-info btn-sm">🔍 Candidatos</a>
+        <form th:if="${puesto.activo}" th:action="@{/empresa/puestos/desactivar}" method="post" class="m-0">
+          <input type="hidden" name="id" th:value="${puesto.id}">
+          <button type="submit" class="btn-danger-sm">Desactivar</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</main>
+
+<div th:replace="~{layout :: pieDePagina}"></div>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Mi CV - Oferente</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:replace="~{layout :: navegacion}"></div>
+
+<main class="dashboard-container container-sm">
+  <header class="page-header">
+    <h1 class="page-title">Mi Currículo Vitae</h1>
+    <p class="page-subtitle">Sube tu CV en formato PDF para que las empresas puedan conocerte mejor.</p>
+  </header>
+
+  <div class="card">
+    <h3 class="text-primary mb-2">Estado de tu CV</h3>
+
+    <div th:if="${oferente.rutaCurriculo != null}" class="alert-success mb-2">
+      <p class="m-0">✅ Ya tienes un currículo registrado: <strong th:text="${oferente.rutaCurriculo}">archivo.pdf</strong></p>
+    </div>
+
+    <div th:unless="${oferente.rutaCurriculo != null}" class="alert-info mb-2">
+      <p class="m-0">⚠️ Aún no has subido tu currículo. Las empresas prefieren candidatos con CV.</p>
+    </div>
+
+    <form th:action="@{/oferente/curriculo/subir}" method="post" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="archivo">Selecciona tu archivo PDF:</label>
+        <input type="file" id="archivo" name="archivo" class="form-control" accept=".pdf" required>
+      </div>
+
+      <div class="d-flex gap-1 mt-2">
+        <button type="submit" class="btn-primary btn-auto">Subir / Actualizar CV</button>
+        <a th:href="@{/oferente/dashboard}" class="btn-primary btn-secondary btn-auto">Volver</a>
+      </div>
+    </form>
+  </div>
+</main>
+
+<div th:replace="~{layout :: pieDePagina}"></div>
+</body>
+</html>

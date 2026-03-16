@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Detalle de Oferente - Empresa</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{layout :: navegacion}"></div>
+
+<main class="main-container">
+  <header class="page-header text-left mb-2">
+    <h1 class="page-title">Detalle de Oferente</h1>
+  </header>
+
+  <a th:href="@{/empresa/puestos}" class="link-back">⬅️ Volver a mis puestos</a>
+
+  <div class="card" th:if="${oferente != null}">
+    <h2 class="text-primary mb-1" th:text="${oferente.nombre} + ' ' + ${oferente.primerApellido}">José Sánchez</h2>
+
+    <div class="info-grid mb-3">
+      <p class="m-0"><strong>Identificación:</strong> <span th:text="${oferente.identificacion}">1-2345-6789</span></p>
+      <p class="m-0"><strong>Email:</strong> <span th:text="${oferente.email}">jose@email.com</span></p>
+      <p class="m-0"><strong>Teléfono:</strong> <span th:text="${oferente.telefono}">8888-8888</span></p>
+      <p class="m-0"><strong>Nacionalidad:</strong> <span th:text="${oferente.nacionalidad}">Costarricense</span></p>
+      <p class="col-span-2 m-0"><strong>Residencia:</strong> <span th:text="${oferente.lugarResidencia}">San José, Costa Rica</span></p>
+    </div>
+
+    <div th:if="${oferente.rutaCurriculo != null}" class="mb-3 text-center" style="background-color: #f4f7f6; padding: 15px; border-radius: 8px; border: 1px dashed #28a745;">
+      <p class="m-0 mb-1 text-success fw-bold">Este candidato ha adjuntado su Currículum Vitae</p>
+      <a th:href="@{'/uploads/curriculos/' + ${oferente.rutaCurriculo}}" target="_blank" class="btn-primary btn-success btn-auto">
+        📄 Ver Currículum (PDF)
+      </a>
+    </div>
+
+    <div th:unless="${oferente.rutaCurriculo != null}" class="mb-3 text-center" style="background-color: #fff3cd; padding: 15px; border-radius: 8px;">
+      <p class="m-0 text-warning fw-bold">El candidato no ha subido un Currículum aún.</p>
+    </div>
+
+    <h3 class="text-primary mb-1">Habilidades Registradas</h3>
+
+    <table class="data-table mb-3">
+      <thead>
+      <tr>
+        <th>Característica</th>
+        <th class="text-center">Nivel (1-5)</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="hab : ${habilidades}">
+        <td th:text="${hab.caracteristica.padre != null ? hab.caracteristica.padre.nombre + ' ➡️ ' + hab.caracteristica.nombre : hab.caracteristica.nombre}">
+          Lenguajes de Programación ➡️ Java
+        </td>
+        <td class="text-center text-info fw-bold" th:text="${hab.nivel}">4</td>
+      </tr>
+      <tr th:if="${#lists.isEmpty(habilidades)}">
+        <td colspan="2" class="text-center text-muted font-italic">Este candidato no ha registrado habilidades técnicas aún.</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<div th:replace="~{layout :: pieDePagina}"></div>
+
+</body>
+</html>

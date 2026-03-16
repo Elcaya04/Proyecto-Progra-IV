@@ -9,7 +9,7 @@ import java.util.List;
 
 // Le decimos a Spring que este es nuestro robot de base de datos
 @Repository
-public interface PuestoRepository extends JpaRepository<Puesto, Integer> { // <Entidad, Tipo de Llave Primaria>
+public interface PuestoRepository extends JpaRepository<Puesto, Long> { // <Entidad, Tipo de Llave Primaria>
 
     // ¡MAGIA DE SPRING DATA!
     // Al nombrar el método así, Spring crea automáticamente el SQL:
@@ -18,5 +18,5 @@ public interface PuestoRepository extends JpaRepository<Puesto, Integer> { // <E
     List<Puesto> findByEmpresaEmail(String email);
     @Query("SELECT DISTINCT p FROM Puesto p JOIN PuestoCaracteristica pc " +
             "ON pc.puesto = p WHERE pc.caracteristica.id IN :ids AND p.activo = true")
-    List<Puesto> findByCaracteristicas(@Param("ids") List<Integer> ids);
+    List<Puesto> findByCaracteristicas(@Param("ids") List<Long> ids);
 }

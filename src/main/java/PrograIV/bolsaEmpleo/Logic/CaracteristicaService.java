@@ -17,7 +17,7 @@ public class CaracteristicaService {
     }
 
     // Hijos de un nodo para navegar el árbol
-    public List<Caracteristica> listarHijos(Integer padreId) {
+    public List<Caracteristica> listarHijos(Long padreId) {
         return caracteristicaRepository.findByPadreId(padreId);
     }
 
@@ -29,7 +29,7 @@ public class CaracteristicaService {
         caracteristicaRepository.save(caracteristica);
     }
 
-    public Caracteristica buscarPorId(Integer id) {
+    public Caracteristica buscarPorId(Long id) {
         return caracteristicaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Característica no encontrada"));
     }

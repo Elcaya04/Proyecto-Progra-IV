@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Empresas Pendientes - Admin</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{layout :: navegacion}"></div>
+
+<main class="main-container">
+
+    <h2 class="section-title">Empresas Pendientes de Aprobación</h2>
+
+    <a th:href="@{/admin/dashboard}" class="link-back mb-2">⬅️ Volver al Dashboard</a>
+
+    <div th:if="${#lists.isEmpty(empresas)}" class="alert-info">
+        <p class="m-0">🎉 No hay empresas pendientes de aprobación en este momento.</p>
+    </div>
+
+    <table th:unless="${#lists.isEmpty(empresas)}" class="data-table">
+        <thead>
+        <tr>
+            <th>Nombre de la Empresa</th>
+            <th>Usuario (Correo)</th>
+            <th class="text-center">Acción</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="empresa : ${empresas}">
+            <td class="fw-500" th:text="${empresa.nombre}">Nombre</td>
+            <td th:text="${empresa.email}">correo@empresa.com</td>
+            <td class="text-center">
+                <form th:action="@{/admin/aprobar-empresa}" method="post" class="m-0">
+                    <input type="hidden" name="email" th:value="${empresa.email}">
+                    <button type="submit" class="btn-success-sm">Aprobar y generar clave 🔑</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</main>
+
+<div th:replace="~{layout :: pieDePagina}"></div>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Candidatos - Empresa</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{layout :: navegacion}"></div>
+
+<main class="main-container">
+
+    <header class="page-header text-left mb-2">
+        <h1 class="page-title">Candidatos para el Puesto</h1>
+        <h3 class="text-primary mt-1">Puesto: <span th:text="${puesto.descripcion}">Full Stack Developer</span></h3>
+    </header>
+
+    <a th:href="@{/empresa/puestos}" class="link-back">⬅️ Volver a mis puestos</a>
+
+    <div th:if="${#lists.isEmpty(candidatos)}" class="alert-info">
+        <p class="m-0">Aún no hay candidatos en el sistema que cumplan con los requisitos de este puesto.</p>
+    </div>
+
+    <table th:unless="${#lists.isEmpty(candidatos)}" class="data-table">
+        <thead>
+        <tr>
+            <th>Oferente</th>
+            <th class="text-center">Requisitos Cumplidos</th>
+            <th class="text-center">% Coincidencia</th>
+            <th class="text-center">Acción</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="match : ${candidatos}">
+            <td class="fw-500" th:text="${match.oferente.nombre} + ' ' + ${match.oferente.primerApellido}">Jose Sanchez</td>
+            <td class="text-center" th:text="${match.requisitosCumplidos} + '/' + ${match.requisitosTotales}">1/1</td>
+
+            <td class="text-center">
+                <span th:text="${#numbers.formatDecimal(match.porcentajeCoincidencia, 1, 2)} + '%'"
+                      th:class="${match.porcentajeCoincidencia >= 80 ? 'text-success fw-bold' : (match.porcentajeCoincidencia >= 50 ? 'text-warning fw-bold' : 'text-danger fw-bold')}">
+                    100.00%
+                </span>
+            </td>
+
+            <td class="text-center">
+                <a th:href="@{/empresa/oferente/{email}(email=${match.oferente.email})}" class="btn-primary btn-sm">Ver detalle 👀</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</main>
+
+<div th:replace="~{layout :: pieDePagina}"></div>
+
+</body>
+</html>

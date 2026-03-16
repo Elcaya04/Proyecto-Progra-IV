@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Publicar Puesto - Empresa</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{layout :: navegacion}"></div>
+
+<main class="dashboard-container">
+    <header class="page-header text-left mb-2">
+        <h1 class="page-title">Publicar Nuevo Puesto</h1>
+        <p class="page-subtitle">Llena los datos para encontrar a tu candidato ideal.</p>
+    </header>
+
+    <a th:href="@{/empresa/puestos}" class="link-back">⬅️ Cancelar y volver</a>
+
+    <div class="card">
+        <form th:action="@{/empresa/puestos/guardar}" method="post">
+            <div class="form-group">
+                <label for="descripcion">Descripción del Puesto (Título y detalles)</label>
+                <textarea id="descripcion" name="descripcion" class="form-control" rows="3" required placeholder="Ej: Buscamos Full Stack Developer..."></textarea>
+            </div>
+
+            <div class="d-flex gap-2 flex-wrap">
+                <div class="form-group flex-1">
+                    <label for="salario">Salario Mensual (₡)</label>
+                    <input type="number" id="salario" name="salario" class="form-control" required placeholder="Ej: 850000" step="0.01">
+                </div>
+                <div class="form-group flex-1">
+                    <label for="tipo">Visibilidad del Puesto</label>
+                    <select id="tipo" name="tipo" class="form-control" required>
+                        <option value="PUBLICO">Público (Cualquiera puede verlo)</option>
+                        <option value="PRIVADO">Privado (Solo usuarios registrados)</option>
+                    </select>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <h3 class="text-primary mb-1">Características / Requisitos</h3>
+            <p class="text-muted-dark mb-1">Selecciona las habilidades que requiere este puesto:</p>
+
+            <div class="checkbox-grid">
+                <div th:each="carac : ${caracteristicas}" class="d-flex align-items-center gap-1">
+                    <input type="checkbox" th:id="'carac_' + ${carac.id}" name="caracteristicasIds" th:value="${carac.id}">
+                    <label th:for="'carac_' + ${carac.id}" class="checkbox-label"
+                           th:text="${carac.padre != null ? carac.padre.nombre + ' ➡️ ' + carac.nombre : carac.nombre}">
+                    </label>
+                </div>
+            </div>
+
+            <div class="text-right mt-3">
+                <button type="submit" class="btn-primary btn-success btn-auto">Publicar Puesto ✅</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<div th:replace="~{layout :: pieDePagina}"></div>
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Oferente - Dashboard</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:replace="~{layout :: navegacion}"></div>
+
+<main class="dashboard-container text-center">
+  <header class="page-header">
+    <h1 class="page-title">Oferente - Dashboard</h1>
+    <p class="page-subtitle">Administra tus habilidades y tu CV.</p>
+  </header>
+
+  <div class="card-grid justify-content-center gap-3">
+    <div class="card stat-card">
+      <div class="stat-icon">⭐</div>
+      <a th:href="@{/oferente/habilidades}" class="btn-primary d-block">Mis Habilidades</a>
+    </div>
+
+    <div class="card stat-card">
+      <div class="stat-icon">📄</div>
+      <a th:href="@{/oferente/cv}" class="btn-primary btn-secondary d-block">Mi CV</a>
+    </div>
+
+    <div class="card highlight-card mt-2">
+      <h3 class="text-primary m-0 mb-1">Oportunidades Laborales</h3>
+      <p class="text-muted-dark mb-2">Explora todas las ofertas de trabajo. Como usuario registrado, tienes acceso exclusivo a puestos <strong>Públicos y Privados</strong>.</p>
+      <a th:href="@{/puestos/buscar-por-caracteristicas}" class="btn-primary btn-success btn-auto">
+        🔍 Ir al Buscador de Empleos
+      </a>
+    </div>
+  </div>
+</main>
+<div th:replace="~{layout :: pieDePagina}"></div>
+</body>
+</html>

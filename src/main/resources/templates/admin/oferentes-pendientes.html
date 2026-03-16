@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Oferentes Pendientes - Admin</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{layout :: navegacion}"></div>
+
+<main class="main-container">
+
+  <h2 class="section-title">Oferentes Pendientes de Aprobación</h2>
+
+  <a th:href="@{/admin/dashboard}" class="link-back mb-2">⬅️ Volver al Dashboard</a>
+
+  <div th:if="${#lists.isEmpty(oferentes)}" class="alert-info">
+    <p class="m-0">🎉 No hay Oferentes pendientes de aprobación en este momento.</p>
+  </div>
+
+  <table th:unless="${#lists.isEmpty(oferentes)}" class="data-table">
+    <thead>
+    <tr>
+      <th>Nombre del Oferente</th>
+      <th>Usuario (Correo)</th>
+      <th class="text-center">Acción</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="oferente : ${oferentes}">
+      <td class="fw-500" th:text="${oferente.nombre}">Nombre</td>
+      <td th:text="${oferente.email}">correo@oferente.com</td>
+      <td class="text-center">
+        <form th:action="@{/admin/aprobar-oferente}" method="post" class="m-0">
+          <input type="hidden" name="email" th:value="${oferente.email}">
+          <button type="submit" class="btn-success-sm">Aprobar y generar clave 🔑</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+</main>
+
+<div th:replace="~{layout :: pieDePagina}"></div>
+
+</body>
+</html>

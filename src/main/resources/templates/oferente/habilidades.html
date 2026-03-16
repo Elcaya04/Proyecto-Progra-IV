@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Mis Habilidades - Oferente</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:replace="~{layout :: navegacion}"></div>
+
+<main class="main-container container-lg">
+  <h2 class="section-title">Mis Habilidades</h2>
+
+  <a th:href="@{/oferente/dashboard}" class="link-back mb-2">⬅️ Volver al Dashboard</a>
+
+  <div class="d-flex gap-2 align-items-start flex-wrap">
+
+    <div class="filter-sidebar">
+      <table class="data-table">
+        <thead>
+        <tr><th>Característica</th><th>Nivel</th></tr>
+        </thead>
+        <tbody>
+        <tr th:each="hab : ${misHabilidades}">
+          <td th:text="${hab.caracteristica.nombre}">Java</td>
+          <td class="text-center fw-bold text-info" th:text="${hab.nivel}">5</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="flex-1 p-2">
+      <p><strong>Ruta:</strong>
+        <a th:href="@{/oferente/habilidades}" class="text-info text-decoration-none fw-bold">Raíces</a>
+        <span th:if="${padreActual != null}" th:text="' / ' + ${padreActual.nombre}"></span>
+      </p>
+      <h4 class="text-primary mb-2" th:text="${padreActual != null ? 'Subcategorías de: ' + padreActual.nombre : 'Categorías Principales'}"></h4>
+
+      <table class="data-table">
+        <tbody>
+        <tr th:each="sub : ${subcategorias}">
+          <td th:text="${sub.nombre}">JUnit</td>
+          <td class="text-center">
+            <a th:href="@{/oferente/habilidades(padreId=${sub.id})}" class="btn-primary btn-sm">Entrar</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="flex-1 p-2 bg-light border rounded">
+      <h4 class="text-primary mb-1">Agregar Habilidad</h4>
+      <form th:action="@{/oferente/habilidades/agregar}" method="post">
+        <div class="form-group">
+          <label>Característica</label>
+          <select name="caracteristicaId" class="form-control" required>
+            <option th:each="sub : ${subcategorias}" th:value="${sub.id}" th:text="${sub.nombre}"></option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Nivel (1-5)</label>
+          <select name="nivel" class="form-control" required>
+            <option value="1">1 (Básico)</option>
+            <option value="2">2</option>
+            <option value="3">3 (Medio)</option>
+            <option value="4">4</option>
+            <option value="5">5 (Experto)</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-primary mt-1">Agregar</button>
+      </form>
+    </div>
+  </div>
+</main>
+<div th:replace="~{layout :: pieDePagina}"></div>
+</body>
+</html>
