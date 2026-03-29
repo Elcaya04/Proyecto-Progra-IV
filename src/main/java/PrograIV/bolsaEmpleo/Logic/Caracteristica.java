@@ -3,6 +3,9 @@ package PrograIV.bolsaEmpleo.Logic;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -19,4 +22,6 @@ public class Caracteristica {
     @ManyToOne
     @JoinColumn(name = "padre_id")
     private Caracteristica padre;
+    @OneToMany(mappedBy = "padre", fetch = FetchType.EAGER)
+    private List<Caracteristica> hijos = new ArrayList<>();
 }

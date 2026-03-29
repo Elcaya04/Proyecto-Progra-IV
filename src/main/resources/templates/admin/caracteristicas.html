@@ -14,7 +14,7 @@
         <h1 class="page-title">Características</h1>
     </header>
 
-    <a th:href="@{/admin/dashboard}" class="link-back mb-2">⬅️ Volver al Dashboard</a>
+    <a th:href="@{/admin/dashboard}" class="link-back mb-2"> Volver al Dashboard</a>
 
     <div class="d-flex gap-3 flex-wrap">
         <div class="flex-2">
@@ -45,7 +45,7 @@
                 <tr th:each="caracteristica : ${caracteristicas}">
                     <td class="fw-500" th:text="${caracteristica.nombre}">Bases de Datos</td>
                     <td class="text-center">
-                        <a th:href="@{/admin/caracteristicas(padreId=${caracteristica.id})}" class="btn-primary btn-sm">Entrar ➡️</a>
+                        <a th:href="@{/admin/caracteristicas(padreId=${caracteristica.id})}" class="btn-primary btn-sm">Entrar </a>
                     </td>
                 </tr>
                 </tbody>

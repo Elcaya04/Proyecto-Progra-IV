@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,38 +33,37 @@ public class PuestoController {
 
 
     @GetMapping("/buscar-por-caracteristicas")
-    public String buscarPuestos(@RequestParam(required = false) Long categoriaId, Model model, Principal principal) {
+    public String buscarPuestos(
+            @RequestParam(required = false) List<Long> ids,
+            Model model,
+            Principal principal) {
 
 
-        List<Caracteristica> subcategorias;
-        Caracteristica categoriaActual = null;
-
-        if (categoriaId == null) {
-            subcategorias = caracteristicaRepository.findByPadreIsNull();
-        } else {
-            categoriaActual = caracteristicaRepository.findById(categoriaId).orElse(null);
-            subcategorias = caracteristicaRepository.findByPadreId(categoriaId);
-        }
-
-        model.addAttribute("subcategorias", subcategorias);
-        model.addAttribute("categoriaActual", categoriaActual);
+        List<Caracteristica> raices = caracteristicaRepository.findByPadreIsNull();
+        model.addAttribute("raices", raices);
+        model.addAttribute("idsSeleccionados", ids != null ? ids : new ArrayList<>());
 
 
         List<Puesto> puestosEncontrados;
 
-        if (categoriaId != null) {
-
-            List<PuestoCaracteristica> pcList = puestoCaracteristicaRepository.findByCaracteristicaId(categoriaId);
-            puestosEncontrados = pcList.stream()
-                    .map(PuestoCaracteristica::getPuesto)
-                    .filter(Puesto::getActivo)
-                    .distinct()
-                    .collect(Collectors.toList());
-        } else {
+        if (ids == null || ids.isEmpty()) {
 
             puestosEncontrados = puestoRepository.findAll().stream()
                     .filter(Puesto::getActivo)
                     .collect(Collectors.toList());
+        } else {
+
+            puestosEncontrados = new ArrayList<>();
+            for (Long id : ids) {
+                List<PuestoCaracteristica> pcList =
+                        puestoCaracteristicaRepository.findByCaracteristicaId(id);
+                for (PuestoCaracteristica pc : pcList) {
+                    Puesto p = pc.getPuesto();
+                    if (p.getActivo() && !puestosEncontrados.contains(p)) {
+                        puestosEncontrados.add(p);
+                    }
+                }
+            }
         }
 
 
@@ -74,7 +74,6 @@ public class PuestoController {
         }
 
         model.addAttribute("puestos", puestosEncontrados);
-
         return "puestos/buscar";
     }
 }

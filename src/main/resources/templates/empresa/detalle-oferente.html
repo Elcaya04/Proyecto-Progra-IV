@@ -14,7 +14,7 @@
     <h1 class="page-title">Detalle de Oferente</h1>
   </header>
 
-  <a th:href="@{/empresa/puestos}" class="link-back">⬅️ Volver a mis puestos</a>
+  <a th:href="@{/empresa/puestos}" class="link-back"> Volver a mis puestos</a>
 
   <div class="card" th:if="${oferente != null}">
     <h2 class="text-primary mb-1" th:text="${oferente.nombre} + ' ' + ${oferente.primerApellido}">José Sánchez</h2>
@@ -50,7 +50,7 @@
       <tbody>
       <tr th:each="hab : ${habilidades}">
         <td th:text="${hab.caracteristica.padre != null ? hab.caracteristica.padre.nombre + ' ➡️ ' + hab.caracteristica.nombre : hab.caracteristica.nombre}">
-          Lenguajes de Programación ➡️ Java
+          Lenguajes de Programación  Java
         </td>
         <td class="text-center text-info fw-bold" th:text="${hab.nivel}">4</td>
       </tr>

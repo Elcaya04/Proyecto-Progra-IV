@@ -35,7 +35,7 @@ public class RegistroController {
             @RequestParam String clave,
 
             @RequestParam(required = false) String nombre,
-            @RequestParam(required = false) String primerApellido,  // FIX 5: campo nuevo
+            @RequestParam(required = false) String primerApellido,
             @RequestParam(required = false) String identificacion,
             @RequestParam(required = false) String nacionalidad,
             @RequestParam(required = false) String telefonoOferente,

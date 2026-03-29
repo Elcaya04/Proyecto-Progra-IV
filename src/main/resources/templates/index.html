@@ -17,7 +17,7 @@
 
         <div class="hero-actions">
             <a th:href="@{/puestos/buscar-por-caracteristicas}" class="btn-hero">
-                🔍 Explorar todos los empleos
+                 Explorar todos los empleos
             </a>
         </div>
     </header>
@@ -36,7 +36,7 @@
                 <p class="puesto-salario">Salario: ₡<span th:text="${puesto.salario}">0.00</span></p>
 
                 <a th:href="'#modal-' + ${puesto.id}" class="btn-primary btn-detalle" style="text-decoration: none; display: block; text-align: center;">
-                    Ver detalle 👀
+                    Ver detalle
                 </a>
             </div>
         </div>
@@ -52,8 +52,8 @@
                         <h4 th:text="${puesto.empresa.nombre}" class="modal-empresa-nombre">Empresa</h4>
 
                         <div class="modal-info-box">
-                            <p class="modal-info-item"><strong>💰 Salario:</strong> ₡<span th:text="${puesto.salario}"></span></p>
-                            <p class="modal-info-item"><strong>🌍 Visibilidad:</strong> <span th:text="${puesto.tipo}"></span></p>
+                            <p class="modal-info-item"><strong> Salario:</strong> ₡<span th:text="${puesto.salario}"></span></p>
+                            <p class="modal-info-item"><strong> Visibilidad:</strong> <span th:text="${puesto.tipo}"></span></p>
 
                             <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
 

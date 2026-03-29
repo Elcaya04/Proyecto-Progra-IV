@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-  <meta charset="UTF-8">
-  <title>Fragmentos</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 
 <nav th:fragment="navegacion" class="navbar">
@@ -11,40 +6,46 @@
     <span class="navbar-logo">💼</span>
     <h2>BolsaEmpleo</h2>
 
+
     <div class="nav-links" sec:authorize="!isAuthenticated()">
-      <a th:href="@{/}">Inicio</a>
+      <a th:href="@{/puestos/buscar-por-caracteristicas}">Buscar puestos</a>
+      <a th:href="@{/registro(tipo=EMPRESA)}">Registro Empresa</a>
+      <a th:href="@{/registro(tipo=OFERENTE)}">Registro Oferente</a>
     </div>
+
 
     <div class="nav-links" sec:authorize="hasRole('ADMIN')">
       <a th:href="@{/admin/dashboard}">Dashboard</a>
-      <a th:href="@{/admin/empresas-pendientes}">Empresas Pendientes</a>
-      <a th:href="@{/admin/oferentes-pendientes}">Oferentes Pendientes</a>
+      <a th:href="@{/admin/empresas-pendientes}">Empresas pendientes</a>
+      <a th:href="@{/admin/oferentes-pendientes}">Oferentes pendientes</a>
       <a th:href="@{/admin/caracteristicas}">Características</a>
       <a th:href="@{/admin/reportes}">Reportes</a>
     </div>
 
+
     <div class="nav-links" sec:authorize="hasRole('EMPRESA')">
       <a th:href="@{/empresa/dashboard}">Dashboard</a>
-      <a th:href="@{/empresa/puestos}">Mis Puestos</a>
-      <a th:href="@{/empresa/puestos/nuevo}">Publicar Puesto</a>
+      <a th:href="@{/empresa/puestos}">Mis puestos</a>
+      <a th:href="@{/empresa/puestos/nuevo}">Publicar puesto</a>
     </div>
+
 
     <div class="nav-links" sec:authorize="hasRole('OFERENTE')">
       <a th:href="@{/oferente/dashboard}">Dashboard</a>
       <a th:href="@{/oferente/habilidades}">Mis habilidades</a>
       <a th:href="@{/oferente/cv}">Mi CV</a>
-      <a th:href="@{/puestos/buscar-por-caracteristicas}" class="nav-link-highlight">Buscar Empleos 🔍</a>
     </div>
   </div>
 
   <div class="navbar-right">
+
     <div class="nav-links" sec:authorize="!isAuthenticated()">
-      <a th:href="@{/login}">Iniciar Sesión</a>
-      <a th:href="@{/registro}">Registrarse</a>
+      <a th:href="@{/login}">Login</a>
     </div>
 
+
     <div class="navbar-right" sec:authorize="isAuthenticated()">
-      <span class="user-email" sec:authentication="name">admin@tuorg.com</span>
+      <span class="user-email" sec:authentication="name">usuario@correo.com</span>
       <form th:action="@{/logout}" method="post" class="m-0">
         <button type="submit" class="btn-salir">Salir</button>
       </form>

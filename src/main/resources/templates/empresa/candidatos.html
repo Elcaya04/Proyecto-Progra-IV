@@ -16,7 +16,7 @@
         <h3 class="text-primary mt-1">Puesto: <span th:text="${puesto.descripcion}">Full Stack Developer</span></h3>
     </header>
 
-    <a th:href="@{/empresa/puestos}" class="link-back">⬅️ Volver a mis puestos</a>
+    <a th:href="@{/empresa/puestos}" class="link-back"> Volver a mis puestos</a>
 
     <div th:if="${#lists.isEmpty(candidatos)}" class="alert-info">
         <p class="m-0">Aún no hay candidatos en el sistema que cumplan con los requisitos de este puesto.</p>

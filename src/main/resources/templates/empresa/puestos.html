@@ -15,7 +15,7 @@
     <a th:href="@{/empresa/puestos/nuevo}" class="btn-primary btn-success btn-auto">+ Publicar Puesto</a>
   </div>
 
-  <a th:href="@{/empresa/dashboard}" class="link-back">⬅️ Volver al Dashboard</a>
+  <a th:href="@{/empresa/dashboard}" class="link-back"> Volver al Dashboard</a>
 
   <div th:if="${#lists.isEmpty(puestos)}" class="alert-info">
     <p class="m-0">Aún no tienes puestos publicados. ¡Anímate a crear el primero!</p>
@@ -43,7 +43,7 @@
       </td>
 
       <td class="text-center d-flex justify-content-center gap-1">
-        <a th:href="@{/empresa/puestos/{id}/candidatos(id=${puesto.id})}" class="btn-primary btn-info btn-sm">🔍 Candidatos</a>
+        <a th:href="@{/empresa/puestos/{id}/candidatos(id=${puesto.id})}" class="btn-primary btn-info btn-sm"> Candidatos</a>
         <form th:if="${puesto.activo}" th:action="@{/empresa/puestos/desactivar}" method="post" class="m-0">
           <input type="hidden" name="id" th:value="${puesto.id}">
           <button type="submit" class="btn-danger-sm">Desactivar</button>

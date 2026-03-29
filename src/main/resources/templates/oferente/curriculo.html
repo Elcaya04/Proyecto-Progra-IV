@@ -18,11 +18,11 @@
     <h3 class="text-primary mb-2">Estado de tu CV</h3>
 
     <div th:if="${oferente.rutaCurriculo != null}" class="alert-success mb-2">
-      <p class="m-0">✅ Ya tienes un currículo registrado: <strong th:text="${oferente.rutaCurriculo}">archivo.pdf</strong></p>
+      <p class="m-0"> Ya tienes un currículo registrado: <strong th:text="${oferente.rutaCurriculo}">archivo.pdf</strong></p>
     </div>
 
     <div th:unless="${oferente.rutaCurriculo != null}" class="alert-info mb-2">
-      <p class="m-0">⚠️ Aún no has subido tu currículo. Las empresas prefieren candidatos con CV.</p>
+      <p class="m-0">⚠ Aún no has subido tu currículo. Las empresas prefieren candidatos con CV.</p>
     </div>
 
     <form th:action="@{/oferente/curriculo/subir}" method="post" enctype="multipart/form-data">

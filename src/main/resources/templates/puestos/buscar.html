@@ -1,9 +1,22 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
   <title>Buscar Empleo - Bolsa de Empleo</title>
   <link rel="stylesheet" th:href="@{/css/styles.css}">
+  <style>
+
+    .tree-root   { margin-bottom: 6px; }
+    .tree-label  { font-weight: 600; color: #003366; font-size: 0.95em; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .tree-label input[type="checkbox"] { width: 15px; height: 15px; cursor: pointer; }
+    .tree-children { padding-left: 24px; margin-top: 2px; }
+    .tree-child  { display: flex; align-items: center; gap: 6px; padding: 2px 0; font-size: 0.9em; color: #444; cursor: pointer; }
+    .tree-child input[type="checkbox"] { width: 14px; height: 14px; cursor: pointer; }
+    .tree-child label { cursor: pointer; margin: 0; }
+    .tree-label label { cursor: pointer; margin: 0; }
+    .btn-limpiar { background: #6c757d; color: #fff; border: none; padding: 8px 18px; border-radius: 5px; cursor: pointer; font-size: 0.9em; }
+    .btn-limpiar:hover { background: #5a6268; }
+  </style>
 </head>
 <body>
 
@@ -15,33 +28,61 @@
     <p class="page-subtitle">Filtra por habilidades y características técnicas</p>
   </header>
 
-  <a th:href="@{/}" class="link-back mb-2">⬅️ Volver al inicio</a>
+  <a th:href="@{/}" class="link-back mb-2">⬅ Volver al inicio</a>
 
   <div class="d-flex gap-3 align-items-start flex-wrap">
 
+
     <div class="card filter-sidebar">
-      <h3 class="text-primary mb-1">Filtros de Búsqueda</h3>
-      <p class="text-muted-dark mb-1">
-        <strong>Categoría actual:</strong><br>
-        <a th:href="@{/puestos/buscar-por-caracteristicas}" class="text-info text-decoration-none fw-bold">Ver Todos (Raíz)</a>
-        <span th:if="${categoriaActual != null}" th:text="' ➡️ ' + ${categoriaActual.nombre}"></span>
-      </p>
+      <h3 class="text-primary mb-2">Buscar puestos por características</h3>
 
-      <h4 class="mb-1 p-0 pb-1 border-bottom text-primary" th:text="${categoriaActual != null ? 'Subcategorías:' : 'Categorías Principales:'}"></h4>
 
-      <ul class="list-unstyled">
-        <li th:each="sub : ${subcategorias}" class="mb-1">
-          <a th:href="@{/puestos/buscar-por-caracteristicas(categoriaId=${sub.id})}" class="btn-filter">📁 <span th:text="${sub.nombre}"></span></a>
-        </li>
-        <li th:if="${#lists.isEmpty(subcategorias)}">
-          <span class="text-muted font-italic">No hay más subcategorías.</span>
-        </li>
-      </ul>
+      <form th:action="@{/puestos/buscar-por-caracteristicas}" method="get">
+
+
+        <div th:each="raiz : ${raices}" class="tree-root">
+
+
+          <div class="tree-label">
+            <input type="checkbox"
+                   name="ids"
+                   th:value="${raiz.id}"
+                   th:id="'chk' + ${raiz.id}"
+                   th:checked="${idsSeleccionados.contains(raiz.id)}">
+            <label th:for="'chk' + ${raiz.id}" th:text="${raiz.nombre}">Categoría</label>
+          </div>
+
+
+          <div class="tree-children" th:if="${not #lists.isEmpty(raiz.hijos)}">
+            <div th:each="hijo : ${raiz.hijos}" class="tree-child">
+              <input type="checkbox"
+                     name="ids"
+                     th:value="${hijo.id}"
+                     th:id="'chk' + ${hijo.id}"
+                     th:checked="${idsSeleccionados.contains(hijo.id)}">
+              <label th:for="'chk' + ${hijo.id}" th:text="${hijo.nombre}">Subcategoría</label>
+            </div>
+          </div>
+
+        </div>
+
+        <div th:if="${#lists.isEmpty(raices)}" class="alert-info">
+          <p class="m-0">No hay características registradas aún.</p>
+        </div>
+
+        <div class="d-flex gap-1 mt-2">
+          <button type="submit" class="btn-primary btn-auto">Buscar</button>
+          <a th:href="@{/puestos/buscar-por-caracteristicas}" class="btn-limpiar">Limpiar</a>
+        </div>
+      </form>
     </div>
 
+
     <div class="results-container">
+      <h4 class="text-primary mb-1">Resultados</h4>
+
       <div th:if="${#lists.isEmpty(puestos)}" class="alert-info">
-        <p class="m-0">No se encontraron puestos activos para esta categoría. Intenta buscar en otra sección.</p>
+        <p class="m-0">No se encontraron puestos activos para los filtros seleccionados.</p>
       </div>
 
       <div th:unless="${#lists.isEmpty(puestos)}" class="d-flex flex-column gap-1">
@@ -54,10 +95,6 @@
               <strong th:if="${puesto.tipo == 'PRIVADO'}" class="text-danger">🔒 PRIVADO</strong>
               <strong th:if="${puesto.tipo == 'PUBLICO'}" class="text-success">🌍 PÚBLICO</strong>
             </p>
-          </div>
-          <div>
-            <a sec:authorize="isAuthenticated()" href="#" class="btn-primary btn-auto">Postularme</a>
-            <a sec:authorize="!isAuthenticated()" th:href="@{/login}" class="btn-primary btn-warning btn-auto m-0">Inicia sesión</a>
           </div>
         </div>
       </div>
