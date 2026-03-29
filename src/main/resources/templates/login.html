@@ -20,8 +20,8 @@
       <p class="m-0" style="font-size: 13px;">Espera a que un Administrador apruebe tu cuenta para poder ingresar.</p>
     </div>
 
-    <div th:if="${error}" class="alert-error">
-      <p th:text="${error}" class="m-0"></p>
+    <div th:if="${param.error}" class="alert-error">
+      <p class="m-0"> Correo o contraseña incorrectos. Intentá de nuevo.</p>
     </div>
 
     <form th:action="@{/login}" method="post">

@@ -51,7 +51,24 @@ public class PuestoService {
         return puestoCaracteristicaRepository.findByPuestoId(puestoId);
     }
 
+    public List<Puesto> listarTodos() {
+        return puestoRepository.findAll();
+    }
 
+    public List<Puesto> listarTodosActivos() {
+        return puestoRepository.findAll().stream()
+                .filter(Puesto::getActivo)
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    public List<Puesto> listarActivosPorCaracteristica(Long caracId) {
+        return puestoCaracteristicaRepository.findByCaracteristicaId(caracId)
+                .stream()
+                .map(PuestoCaracteristica::getPuesto)
+                .filter(Puesto::getActivo)
+                .distinct()
+                .collect(java.util.stream.Collectors.toList());
+    }
     public List<Puesto> buscarPorCaracteristicas(List<Long> caracteristicaIds) {
         if (caracteristicaIds == null || caracteristicaIds.isEmpty()) {
             return listarPublicos();

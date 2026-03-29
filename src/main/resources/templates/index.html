@@ -4,6 +4,38 @@
     <meta charset="UTF-8">
     <title>Bolsa de Empleo - Inicio</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        .tarjeta-puesto {
+            position: relative;
+            cursor: pointer;
+        }
+        .detalle-hover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #fff;
+            border: 2px solid #003366;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            z-index: 10;
+            box-sizing: border-box;
+        }
+        .tarjeta-puesto:hover .detalle-hover {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .detalle-hover h4 { color: #003366; margin: 0 0 8px 0; font-size: 0.95em; }
+        .detalle-hover ul { margin: 6px 0 0 0; padding-left: 18px; color: #555; font-size: 0.88em; }
+        .detalle-hover p  { margin: 4px 0; font-size: 0.88em; color: #444; }
+        .badge-tipo    { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.8em; font-weight: 600; }
+        .badge-publico { background: #d4edda; color: #155724; }
+        .badge-privado { background: #f8d7da; color: #721c24; }
+    </style>
 </head>
 <body>
 
@@ -14,7 +46,6 @@
     <header class="hero-header">
         <h1 class="hero-title">Bienvenido a la Bolsa de Empleo UNA</h1>
         <p class="hero-subtitle">Encuentra tu próximo reto profesional explorando miles de oportunidades.</p>
-
         <div class="hero-actions">
             <a th:href="@{/puestos/buscar-por-caracteristicas}" class="btn-hero">
                  Explorar todos los empleos
@@ -24,6 +55,9 @@
 
     <section>
         <h2 class="section-title">Últimos Puestos Disponibles</h2>
+        <p class="text-muted-dark" style="margin-top:-10px; margin-bottom:20px; font-size:0.9em;">
+            Pasa el mouse sobre una tarjeta para ver el detalle de sus requisitos.
+        </p>
 
         <div th:if="${#lists.isEmpty(puestos)}" class="alert-info">
             <p>En este momento no hay puestos públicos recientes. ¡Usa el buscador para ver más opciones!</p>
@@ -31,51 +65,34 @@
 
         <div class="grid-puestos" th:unless="${#lists.isEmpty(puestos)}">
             <div th:each="puesto : ${puestos}" class="tarjeta-puesto">
+
                 <h3 th:text="${puesto.empresa.nombre}" class="puesto-empresa">Empresa</h3>
                 <h4 th:text="${puesto.descripcion}" class="puesto-titulo">Puesto</h4>
                 <p class="puesto-salario">Salario: ₡<span th:text="${puesto.salario}">0.00</span></p>
+                <p style="font-size:0.8em; color:#888; margin:0;">Pasa el mouse para ver detalles.</p>
 
-                <a th:href="'#modal-' + ${puesto.id}" class="btn-primary btn-detalle" style="text-decoration: none; display: block; text-align: center;">
-                    Ver detalle
-                </a>
-            </div>
-        </div>
-
-        <div th:unless="${#lists.isEmpty(puestos)}">
-            <div th:each="puesto : ${puestos}">
-
-                <div th:id="'modal-' + ${puesto.id}" class="modal-fondo">
-                    <div class="modal-contenido">
-                        <a href="#" class="cerrar-modal" style="text-decoration: none;">&times;</a>
-
-                        <h2 th:text="${puesto.descripcion}" class="modal-puesto-titulo">Puesto</h2>
-                        <h4 th:text="${puesto.empresa.nombre}" class="modal-empresa-nombre">Empresa</h4>
-
-                        <div class="modal-info-box">
-                            <p class="modal-info-item"><strong> Salario:</strong> ₡<span th:text="${puesto.salario}"></span></p>
-                            <p class="modal-info-item"><strong> Visibilidad:</strong> <span th:text="${puesto.tipo}"></span></p>
-
-                            <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
-
-                            <p class="modal-info-item" style="font-weight: bold; color: #003366;">Requisitos Técnicos:</p>
-                            <ul style="margin: 0; padding-left: 20px; color: #555; font-size: 0.9em;">
-                                <li th:each="pc : ${puesto.puestoCaracteristicas}" th:text="${pc.caracteristica.nombre}">Habilidad</li>
-
-                                <li th:if="${#lists.isEmpty(puesto.puestoCaracteristicas)}" style="font-style: italic;">
-                                    No se especificaron requisitos técnicos.
-                                </li>
-                            </ul>
-                        </div>
-
-                        <a th:href="@{/puestos/buscar-por-caracteristicas}" class="btn-postular">
-                            Ir a postularme
-                        </a>
-                    </div>
+                <div class="detalle-hover">
+                    <h4 th:text="${puesto.descripcion}">Título</h4>
+                    <p><strong>Empresa:</strong> <span th:text="${puesto.empresa.nombre}"></span></p>
+                    <p><strong>Salario:</strong> ₡<span th:text="${puesto.salario}"></span></p>
+                    <p>
+                        <strong>Visibilidad:</strong>
+                        <span th:if="${puesto.tipo == 'PUBLICO'}"  class="badge-tipo badge-publico">🌍 Público</span>
+                        <span th:if="${puesto.tipo == 'PRIVADO'}" class="badge-tipo badge-privado">🔒 Privado</span>
+                    </p>
+                    <p><strong>Requisitos técnicos:</strong></p>
+                    <ul>
+                        <li th:each="pc : ${puesto.puestoCaracteristicas}"
+                            th:text="${pc.caracteristica.nombre} + ' (nivel mínimo: ' + ${pc.nivelRequerido} + ')'">
+                        </li>
+                        <li th:if="${#lists.isEmpty(puesto.puestoCaracteristicas)}"
+                            style="font-style:italic; color:#888;">
+                            Sin requisitos técnicos especificados.
+                        </li>
+                    </ul>
                 </div>
-
             </div>
         </div>
-
     </section>
 </main>
 

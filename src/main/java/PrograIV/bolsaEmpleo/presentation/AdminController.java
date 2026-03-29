@@ -1,13 +1,6 @@
 package PrograIV.bolsaEmpleo.presentation;
 
-import PrograIV.bolsaEmpleo.Logic.Caracteristica;
-import PrograIV.bolsaEmpleo.Logic.Empresa;
-import PrograIV.bolsaEmpleo.Logic.Oferente;
-import PrograIV.bolsaEmpleo.Logic.Puesto;
-import PrograIV.bolsaEmpleo.data.CaracteristicaRepository;
-import PrograIV.bolsaEmpleo.data.EmpresaRepository;
-import PrograIV.bolsaEmpleo.data.OferenteRepository;
-import PrograIV.bolsaEmpleo.data.PuestoRepository;
+import PrograIV.bolsaEmpleo.Logic.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,65 +9,50 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
     @Autowired
-    private EmpresaRepository empresaRepository;
+    private EmpresaService empresaService;
 
     @Autowired
-    private OferenteRepository oferenteRepository;
+    private OferenteService oferenteService;
 
     @Autowired
-    private CaracteristicaRepository caracteristicaRepository;
+    private CaracteristicaService caracteristicaService;
 
     @Autowired
-    private PuestoRepository puestoRepository;
-
+    private PuestoService puestoService;
 
     @GetMapping("/dashboard")
     public String verDashboard() {
         return "admin/dashboard";
     }
 
-
     @GetMapping("/empresas-pendientes")
     public String verEmpresasPendientes(Model model) {
-        List<Empresa> pendientes = empresaRepository.findByEstado(0);
-        model.addAttribute("empresas", pendientes);
+        model.addAttribute("empresas", empresaService.listarPendientes());
         return "admin/empresas-pendientes";
     }
 
     @PostMapping("/aprobar-empresa")
     public String aprobarEmpresa(@RequestParam String email) {
-        Empresa empresa = empresaRepository.findById(email).orElse(null);
-        if (empresa != null) {
-            empresa.setEstado(1);
-            empresaRepository.save(empresa);
-        }
+        empresaService.aprobar(email);
         return "redirect:/admin/empresas-pendientes";
     }
 
-
     @GetMapping("/oferentes-pendientes")
     public String verOferentesPendientes(Model model) {
-        List<Oferente> pendientes = oferenteRepository.findByEstado(0);
-        model.addAttribute("oferentes", pendientes);
+        model.addAttribute("oferentes", oferenteService.listarPendientes());
         return "admin/oferentes-pendientes";
     }
 
     @PostMapping("/aprobar-oferente")
     public String aprobarOferente(@RequestParam String email) {
-        Oferente oferente = oferenteRepository.findById(email).orElse(null);
-        if (oferente != null) {
-            oferente.setEstado(1);
-            oferenteRepository.save(oferente);
-        }
+        oferenteService.aprobar(email);
         return "redirect:/admin/oferentes-pendientes";
     }
-
 
     @GetMapping("/caracteristicas")
     public String verCaracteristicas(@RequestParam(required = false) Long padreId, Model model) {
@@ -82,10 +60,10 @@ public class AdminController {
         Caracteristica padreActual = null;
 
         if (padreId == null) {
-            lista = caracteristicaRepository.findByPadreIsNull();
+            lista = caracteristicaService.listarRaices();
         } else {
-            padreActual = caracteristicaRepository.findById(padreId).orElse(null);
-            lista = caracteristicaRepository.findByPadreId(padreId);
+            padreActual = caracteristicaService.buscarPorId(padreId);
+            lista = caracteristicaService.listarHijos(padreId);
         }
 
         model.addAttribute("caracteristicas", lista);
@@ -100,24 +78,20 @@ public class AdminController {
         nueva.setNombre(nombre);
 
         if (padreId != null) {
-            Caracteristica padre = caracteristicaRepository.findById(padreId).orElse(null);
+            Caracteristica padre = caracteristicaService.buscarPorId(padreId);
             nueva.setPadre(padre);
         }
 
-        caracteristicaRepository.save(nueva);
+        caracteristicaService.crear(nueva);
 
-        if (padreId != null) {
-            return "redirect:/admin/caracteristicas?padreId=" + padreId;
-        }
-        return "redirect:/admin/caracteristicas";
+        return padreId != null
+                ? "redirect:/admin/caracteristicas?padreId=" + padreId
+                : "redirect:/admin/caracteristicas";
     }
-
 
     @GetMapping("/reportes")
     public String verReportes(Model model) {
-        // Enviamos los años disponibles para el selector del formulario
-        List<Integer> aniosDisponibles = puestoRepository.findAll()
-                .stream()
+        List<Integer> aniosDisponibles = puestoService.listarTodos().stream()
                 .filter(p -> p.getFechaCreacion() != null)
                 .map(p -> p.getFechaCreacion().getYear())
                 .distinct()
@@ -127,7 +101,6 @@ public class AdminController {
         model.addAttribute("anios", aniosDisponibles);
         return "admin/reportes";
     }
-
 
     @GetMapping("/reportes/puestos-pdf")
     public void descargarReportePdf(
@@ -141,21 +114,17 @@ public class AdminController {
                 : "Reporte_Puestos_Completo.pdf";
         response.setHeader("Content-Disposition", "attachment; filename=" + nombreArchivo);
 
-
-        List<Puesto> todos = puestoRepository.findAll();
-        List<Puesto> puestos = todos.stream()
+        List<Puesto> puestos = puestoService.listarTodos().stream()
                 .filter(p -> p.getFechaCreacion() != null)
                 .filter(p -> mes == null || p.getFechaCreacion().getMonthValue() == mes)
                 .filter(p -> anio == null || p.getFechaCreacion().getYear() == anio)
                 .sorted(java.util.Comparator.comparing(Puesto::getFechaCreacion))
                 .collect(Collectors.toList());
 
-
         com.lowagie.text.Document documento =
                 new com.lowagie.text.Document(com.lowagie.text.PageSize.A4);
         com.lowagie.text.pdf.PdfWriter.getInstance(documento, response.getOutputStream());
         documento.open();
-
 
         com.lowagie.text.Font fuenteTitulo =
                 com.lowagie.text.FontFactory.getFont(com.lowagie.text.FontFactory.HELVETICA_BOLD);
@@ -170,10 +139,9 @@ public class AdminController {
                 com.lowagie.text.FontFactory.getFont(com.lowagie.text.FontFactory.HELVETICA);
         fuenteNormal.setSize(10);
 
-
         String tituloPdf = (mes != null && anio != null)
-                ? "Reporte de Puestos – " + obtenerNombreMes(mes) + " " + anio
-                : "Reporte de Puestos – Todos los Registros";
+                ? "Reporte de Puestos - " + obtenerNombreMes(mes) + " " + anio
+                : "Reporte de Puestos - Todos los Registros";
 
         com.lowagie.text.Paragraph titulo =
                 new com.lowagie.text.Paragraph(tituloPdf, fuenteTitulo);
@@ -182,51 +150,40 @@ public class AdminController {
         documento.add(titulo);
 
         com.lowagie.text.Paragraph generado =
-                new com.lowagie.text.Paragraph(
-                        "Generado el: " + java.time.LocalDate.now(), fuenteNormal);
+                new com.lowagie.text.Paragraph("Generado el: " + java.time.LocalDate.now(), fuenteNormal);
         generado.setAlignment(com.lowagie.text.Paragraph.ALIGN_CENTER);
         generado.setSpacingAfter(20);
         documento.add(generado);
 
         if (puestos.isEmpty()) {
             documento.add(new com.lowagie.text.Paragraph(
-                    "No se encontraron puestos para el período seleccionado.", fuenteNormal));
+                    "No se encontraron puestos para el periodo seleccionado.", fuenteNormal));
         } else {
-
             String mesAnioActual = "";
-
             com.lowagie.text.pdf.PdfPTable tabla = null;
 
             for (Puesto puesto : puestos) {
                 String mesAnio = obtenerNombreMes(puesto.getFechaCreacion().getMonthValue())
                         + " " + puesto.getFechaCreacion().getYear();
 
-
                 if (!mesAnio.equals(mesAnioActual)) {
-
                     if (tabla != null) {
                         documento.add(tabla);
                         documento.add(new com.lowagie.text.Paragraph(" "));
                     }
-
-
                     com.lowagie.text.Paragraph encabezadoMes =
                             new com.lowagie.text.Paragraph(mesAnio, fuenteSubtitulo);
                     encabezadoMes.setSpacingBefore(10);
                     encabezadoMes.setSpacingAfter(4);
                     documento.add(encabezadoMes);
 
-
                     tabla = new com.lowagie.text.pdf.PdfPTable(4);
                     tabla.setWidthPercentage(100f);
                     tabla.setWidths(new float[]{2f, 3f, 4f, 2f});
-
-
                     agregarCeldaEncabezado(tabla, "Fecha");
                     agregarCeldaEncabezado(tabla, "Empresa");
-                    agregarCeldaEncabezado(tabla, "Descripción");
-                    agregarCeldaEncabezado(tabla, "Salario (₡)");
-
+                    agregarCeldaEncabezado(tabla, "Descripcion");
+                    agregarCeldaEncabezado(tabla, "Salario (colones)");
                     mesAnioActual = mesAnio;
                 }
 
@@ -243,8 +200,6 @@ public class AdminController {
 
         documento.close();
     }
-
-
 
     private void agregarCeldaEncabezado(com.lowagie.text.pdf.PdfPTable tabla, String texto) {
         com.lowagie.text.pdf.PdfPCell celda = new com.lowagie.text.pdf.PdfPCell(

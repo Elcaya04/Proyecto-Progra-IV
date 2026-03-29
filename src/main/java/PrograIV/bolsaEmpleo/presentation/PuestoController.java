@@ -1,11 +1,9 @@
 package PrograIV.bolsaEmpleo.presentation;
 
 import PrograIV.bolsaEmpleo.Logic.Caracteristica;
+import PrograIV.bolsaEmpleo.Logic.CaracteristicaService;
 import PrograIV.bolsaEmpleo.Logic.Puesto;
-import PrograIV.bolsaEmpleo.Logic.PuestoCaracteristica;
-import PrograIV.bolsaEmpleo.data.CaracteristicaRepository;
-import PrograIV.bolsaEmpleo.data.PuestoCaracteristicaRepository;
-import PrograIV.bolsaEmpleo.data.PuestoRepository;
+import PrograIV.bolsaEmpleo.Logic.PuestoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,14 +21,10 @@ import java.util.stream.Collectors;
 public class PuestoController {
 
     @Autowired
-    private PuestoRepository puestoRepository;
+    private PuestoService puestoService;
 
     @Autowired
-    private CaracteristicaRepository caracteristicaRepository;
-
-    @Autowired
-    private PuestoCaracteristicaRepository puestoCaracteristicaRepository;
-
+    private CaracteristicaService caracteristicaService;
 
     @GetMapping("/buscar-por-caracteristicas")
     public String buscarPuestos(
@@ -38,34 +32,25 @@ public class PuestoController {
             Model model,
             Principal principal) {
 
-
-        List<Caracteristica> raices = caracteristicaRepository.findByPadreIsNull();
+        List<Caracteristica> raices = caracteristicaService.listarRaices();
         model.addAttribute("raices", raices);
         model.addAttribute("idsSeleccionados", ids != null ? ids : new ArrayList<>());
-
 
         List<Puesto> puestosEncontrados;
 
         if (ids == null || ids.isEmpty()) {
-
-            puestosEncontrados = puestoRepository.findAll().stream()
-                    .filter(Puesto::getActivo)
-                    .collect(Collectors.toList());
+            puestosEncontrados = puestoService.listarTodosActivos();
         } else {
-
             puestosEncontrados = new ArrayList<>();
             for (Long id : ids) {
-                List<PuestoCaracteristica> pcList =
-                        puestoCaracteristicaRepository.findByCaracteristicaId(id);
-                for (PuestoCaracteristica pc : pcList) {
-                    Puesto p = pc.getPuesto();
-                    if (p.getActivo() && !puestosEncontrados.contains(p)) {
+                List<Puesto> porCarac = puestoService.listarActivosPorCaracteristica(id);
+                for (Puesto p : porCarac) {
+                    if (!puestosEncontrados.contains(p)) {
                         puestosEncontrados.add(p);
                     }
                 }
             }
         }
-
 
         if (principal == null) {
             puestosEncontrados = puestosEncontrados.stream()

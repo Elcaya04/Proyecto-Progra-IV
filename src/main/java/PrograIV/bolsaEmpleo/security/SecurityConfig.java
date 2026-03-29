@@ -52,6 +52,7 @@ public class SecurityConfig {
                                 response.sendRedirect("/");
                             }
                         })
+                        .failureUrl("/login?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout
