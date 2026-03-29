@@ -1,11 +1,12 @@
 package PrograIV.bolsaEmpleo.Logic;
-
+import PrograIV.bolsaEmpleo.data.CaracteristicaRepository;
 import PrograIV.bolsaEmpleo.data.PuestoCaracteristicaRepository;
 import PrograIV.bolsaEmpleo.data.PuestoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PuestoService {
@@ -15,7 +16,8 @@ public class PuestoService {
 
     @Autowired
     private PuestoCaracteristicaRepository puestoCaracteristicaRepository;
-
+    @Autowired
+    private CaracteristicaRepository caracteristicaRepository;
     public List<Puesto> listarUltimosPublicos() {
         List<Puesto> todos = puestoRepository.findByActivoTrueAndTipo("PUBLICO");
         int total = todos.size();
@@ -55,5 +57,26 @@ public class PuestoService {
             return listarPublicos();
         }
         return puestoRepository.findByCaracteristicas(caracteristicaIds);
+    }
+    public void guardarConCaracteristicas(Puesto puesto,
+                                          List<Long> caracteristicasIds,
+                                          Map<Long, Integer> niveles) {
+        Puesto puestoGuardado = puestoRepository.save(puesto);
+
+        if (caracteristicasIds != null) {
+            for (Long caracId : caracteristicasIds) {
+                Caracteristica carac = caracteristicaRepository.findById(caracId).orElse(null);
+                if (carac != null) {
+                    PuestoCaracteristica pc = new PuestoCaracteristica();
+                    pc.setPuesto(puestoGuardado);
+                    pc.setCaracteristica(carac);
+
+                    int nivelRequerido = niveles.getOrDefault(caracId, 1);
+                    pc.setNivelRequerido(nivelRequerido);
+
+                    puestoCaracteristicaRepository.save(pc);
+                }
+            }
+        }
     }
 }

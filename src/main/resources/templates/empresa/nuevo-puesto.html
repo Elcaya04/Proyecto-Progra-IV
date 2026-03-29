@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <title>Publicar Puesto - Empresa</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+
+        .req-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+        .req-table th { background: #003366; color: #fff; padding: 8px 10px; text-align: left; font-size: 0.85em; }
+        .req-table td { padding: 6px 10px; border-bottom: 1px solid #e0e0e0; font-size: 0.9em; vertical-align: middle; }
+        .req-table tr:hover td { background-color: #f4f7fa; }
+        .req-table input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
+        .req-table select { padding: 3px 6px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.85em; }
+        .nivel-col { width: 130px; text-align: center; }
+        .check-col { width: 40px; text-align: center; }
+    </style>
 </head>
 <body>
 
@@ -19,15 +30,18 @@
 
     <div class="card">
         <form th:action="@{/empresa/puestos/guardar}" method="post">
+
             <div class="form-group">
                 <label for="descripcion">Descripción del Puesto (Título y detalles)</label>
-                <textarea id="descripcion" name="descripcion" class="form-control" rows="3" required placeholder="Ej: Buscamos Full Stack Developer..."></textarea>
+                <textarea id="descripcion" name="descripcion" class="form-control" rows="3"
+                          required placeholder="Ej: Buscamos Full Stack Developer..."></textarea>
             </div>
 
             <div class="d-flex gap-2 flex-wrap">
                 <div class="form-group flex-1">
                     <label for="salario">Salario Mensual (₡)</label>
-                    <input type="number" id="salario" name="salario" class="form-control" required placeholder="Ej: 850000" step="0.01">
+                    <input type="number" id="salario" name="salario" class="form-control"
+                           required placeholder="Ej: 850000" step="0.01">
                 </div>
                 <div class="form-group flex-1">
                     <label for="tipo">Visibilidad del Puesto</label>
@@ -41,16 +55,49 @@
             <hr class="divider">
 
             <h3 class="text-primary mb-1">Características / Requisitos</h3>
-            <p class="text-muted-dark mb-1">Selecciona las habilidades que requiere este puesto:</p>
+            <p class="text-muted-dark mb-1">
+                Marca las habilidades requeridas e indica el nivel mínimo que debe tener el candidato:
+            </p>
 
-            <div class="checkbox-grid">
-                <div th:each="carac : ${caracteristicas}" class="d-flex align-items-center gap-1">
-                    <input type="checkbox" th:id="'carac_' + ${carac.id}" name="caracteristicasIds" th:value="${carac.id}">
-                    <label th:for="'carac_' + ${carac.id}" class="checkbox-label"
-                           th:text="${carac.padre != null ? carac.padre.nombre + ' ➡️ ' + carac.nombre : carac.nombre}">
-                    </label>
-                </div>
-            </div>
+            <table class="req-table">
+                <thead>
+                <tr>
+                    <th class="check-col">✔</th>
+                    <th>Característica</th>
+                    <th class="nivel-col">Nivel Mínimo Requerido</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="carac : ${caracteristicas}">
+                    <td class="check-col">
+                        <input type="checkbox"
+                               th:id="'carac_' + ${carac.id}"
+                               name="caracteristicasIds"
+                               th:value="${carac.id}">
+                    </td>
+                    <td>
+                        <label th:for="'carac_' + ${carac.id}"
+                               th:text="${carac.padre != null ? carac.padre.nombre + ' ➡️ ' + carac.nombre : carac.nombre}"
+                               style="cursor:pointer; margin:0;">
+                        </label>
+                    </td>
+                    <td class="nivel-col">
+                        <select th:name="'nivel_' + ${carac.id}" class="form-control">
+                            <option value="1">1 – Básico</option>
+                            <option value="2">2</option>
+                            <option value="3" selected="selected">3 – Intermedio</option>
+                            <option value="4">4</option>
+                            <option value="5">5 – Experto</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(caracteristicas)}">
+                    <td colspan="3" class="text-center text-muted" style="padding: 20px;">
+                        No hay características registradas. Pídele al administrador que las agregue.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
             <div class="text-right mt-3">
                 <button type="submit" class="btn-primary btn-success btn-auto">Publicar Puesto ✅</button>

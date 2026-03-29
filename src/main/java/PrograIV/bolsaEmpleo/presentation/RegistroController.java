@@ -31,10 +31,11 @@ public class RegistroController {
     @PostMapping("/registro")
     public String procesarRegistroGeneral(
             @RequestParam String tipoUsuario,
-            @RequestParam String nombre,
             @RequestParam String email,
             @RequestParam String clave,
 
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) String primerApellido,  // FIX 5: campo nuevo
             @RequestParam(required = false) String identificacion,
             @RequestParam(required = false) String nacionalidad,
             @RequestParam(required = false) String telefonoOferente,
@@ -53,13 +54,12 @@ public class RegistroController {
                 empresa.setTipoUsuario("EMPRESA");
                 empresa.setNombre(nombre);
                 empresa.setEstado(0);
-
-
                 empresa.setTelefono(telefonoEmpresa);
                 empresa.setLocalizacion(localizacion);
                 empresa.setDescripcion(descripcion);
 
                 empresaService.registrar(empresa);
+
             } else {
                 Oferente oferente = new Oferente();
                 oferente.setEmail(email);
@@ -67,16 +67,15 @@ public class RegistroController {
                 oferente.setTipoUsuario("OFERENTE");
                 oferente.setNombre(nombre);
                 oferente.setEstado(0);
-
-
                 oferente.setIdentificacion(identificacion);
                 oferente.setNacionalidad(nacionalidad);
                 oferente.setTelefono(telefonoOferente);
                 oferente.setLugarResidencia(lugarResidencia);
 
+                oferente.setPrimerApellido(primerApellido);
+
                 oferenteService.registrar(oferente);
             }
-
 
             return "redirect:/login?exito=true";
 
