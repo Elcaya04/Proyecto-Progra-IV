@@ -9,9 +9,8 @@ import java.util.List;
 @Repository
 public interface CaracteristicaRepository extends JpaRepository<Caracteristica, Long> {
 
-    // Raíces del árbol jerárquico (las que no tienen padre)
+
     List<Caracteristica> findByPadreIsNull();
 
-    // Hijos directos de una característica padre
     List<Caracteristica> findByPadreId(Long padreId);
 }

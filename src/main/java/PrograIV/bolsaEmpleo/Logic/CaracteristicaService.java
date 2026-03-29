@@ -11,12 +11,12 @@ public class CaracteristicaService {
     @Autowired
     private CaracteristicaRepository caracteristicaRepository;
 
-    // Raíces del árbol (para mostrar el árbol al admin)
+
     public List<Caracteristica> listarRaices() {
         return caracteristicaRepository.findByPadreIsNull();
     }
 
-    // Hijos de un nodo para navegar el árbol
+
     public List<Caracteristica> listarHijos(Long padreId) {
         return caracteristicaRepository.findByPadreId(padreId);
     }

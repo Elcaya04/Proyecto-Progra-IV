@@ -20,20 +20,14 @@ public class Puesto {
     private String descripcion;
 
     private Double salario;
-
-    // "PUBLICO" o "PRIVADO"
     private String tipo;
 
     private Boolean activo = true;
-
-    // Guarda la fecha automáticamente
     private LocalDate fechaCreacion = LocalDate.now();
 
     @ManyToOne
     @JoinColumn(name = "empresa_id", nullable = false)
     private Empresa empresa;
-
-    // 👇 EL TOQUE MAESTRO: Conectamos el puesto con sus características 👇
     @OneToMany(mappedBy = "puesto")
     private List<PuestoCaracteristica> puestoCaracteristicas;
 }

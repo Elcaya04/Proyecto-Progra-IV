@@ -34,12 +34,12 @@ public class RegistroController {
             @RequestParam String nombre,
             @RequestParam String email,
             @RequestParam String clave,
-            // 👇 NUEVOS CAMPOS EXCLUSIVOS DE OFERENTE 👇
+
             @RequestParam(required = false) String identificacion,
             @RequestParam(required = false) String nacionalidad,
             @RequestParam(required = false) String telefonoOferente,
             @RequestParam(required = false) String lugarResidencia,
-            // 👇 NUEVOS CAMPOS EXCLUSIVOS DE EMPRESA 👇
+
             @RequestParam(required = false) String telefonoEmpresa,
             @RequestParam(required = false) String localizacion,
             @RequestParam(required = false) String descripcion,
@@ -52,9 +52,9 @@ public class RegistroController {
                 empresa.setClave(passwordEncoder.encode(clave));
                 empresa.setTipoUsuario("EMPRESA");
                 empresa.setNombre(nombre);
-                empresa.setEstado(0); // 0 = Pendiente de aprobación
+                empresa.setEstado(0);
 
-                // Guardamos los datos extra
+
                 empresa.setTelefono(telefonoEmpresa);
                 empresa.setLocalizacion(localizacion);
                 empresa.setDescripcion(descripcion);
@@ -66,9 +66,9 @@ public class RegistroController {
                 oferente.setClave(passwordEncoder.encode(clave));
                 oferente.setTipoUsuario("OFERENTE");
                 oferente.setNombre(nombre);
-                oferente.setEstado(0); // 0 = Pendiente de aprobación
+                oferente.setEstado(0);
 
-                // Guardamos los datos extra
+
                 oferente.setIdentificacion(identificacion);
                 oferente.setNacionalidad(nacionalidad);
                 oferente.setTelefono(telefonoOferente);
@@ -77,7 +77,7 @@ public class RegistroController {
                 oferenteService.registrar(oferente);
             }
 
-            // Redirigimos al login con un parámetro de éxito para que el usuario sepa qué pasó
+
             return "redirect:/login?exito=true";
 
         } catch (Exception e) {

@@ -14,15 +14,15 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        // 1. Rutas públicas para todos
+
                         .requestMatchers("/", "/login", "/registro", "/css/**", "/puestos/**").permitAll()
 
-                        // 2. Control de acceso por Roles
+
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/empresa/**").hasRole("EMPRESA")
                         .requestMatchers("/oferente/**").hasRole("OFERENTE")
 
-                        // 3. Cualquier otra ruta requiere estar logueado
+
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -30,10 +30,10 @@ public class SecurityConfig {
                         .usernameParameter("email")
                         .passwordParameter("clave")
 
-                        // --- REDIRECCIÓN INTELIGENTE SEGÚN EL ROL ---
+
                         .successHandler((request, response, authentication) -> {
 
-                            // Extraemos los roles del usuario logueado
+
                             var roles = authentication.getAuthorities().stream()
                                     .map(rol -> rol.getAuthority())
                                     .toList();
@@ -45,7 +45,7 @@ public class SecurityConfig {
                                 response.sendRedirect("/empresa/dashboard");
                             }
                             else if (roles.contains("ROLE_OFERENTE")) {
-                                // 👇 ¡ESTA ES LA LÍNEA MÁGICA QUE FALTABA! 👇
+
                                 response.sendRedirect("/oferente/dashboard");
                             }
                             else {

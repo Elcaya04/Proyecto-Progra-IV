@@ -8,7 +8,7 @@ body {
     padding: 0;
 }
 
-/* --- ESTILOS DE LA BARRA DE NAVEGACIÓN --- */
+
 .navbar { background-color: #003366; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; color: white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
 .navbar-left, .navbar-right { display: flex; align-items: center; }
 .navbar-logo { font-size: 24px; margin-right: 10px; }
@@ -19,7 +19,7 @@ body {
 .btn-salir { background: none; border: none; color: white; cursor: pointer; font-family: inherit; font-size: 16px; margin-left: 20px; font-weight: 600; }
 .btn-salir:hover { color: #ff4c4c; }
 
-/* --- ESTILOS DE ESTRUCTURA Y CONTENEDORES --- */
+
 .main-container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
 .dashboard-container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
 .container-lg { max-width: 1200px; }
@@ -30,7 +30,7 @@ body {
 .page-subtitle { color: #555; font-size: 18px; }
 .section-title { color: #003366; border-bottom: 2px solid #f0a500; padding-bottom: 10px; margin-bottom: 20px; }
 
-/* --- ESTILOS DE TARJETAS (CARDS) --- */
+
 .card-grid { display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; }
 .card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
 .card-flex { flex: 1; min-width: 250px; }
@@ -39,19 +39,19 @@ body {
 .card-text { color: #666; font-size: 14px; margin-bottom: 20px; }
 .card-details { color: #555; font-size: 15px; display: flex; flex-direction: column; gap: 8px; }
 
-/* --- ESTILOS DE LISTAS Y TABLAS --- */
+
 .list-unstyled { list-style: none; padding: 0; }
 .data-table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-radius: 10px; overflow: hidden; }
 .data-table thead { background-color: #003366; color: white; text-align: left; }
 .data-table th, .data-table td { padding: 15px; }
 .data-table tr { border-bottom: 1px solid #eee; }
 
-/* --- MENSAJES DE ALERTA --- */
+
 .alert-error { background-color: #ffcccc; color: #cc0000; padding: 10px; margin-bottom: 15px; border-radius: 5px; text-align: center; font-weight: bold; }
 .alert-info { background: white; padding: 20px; border-radius: 8px; text-align: center; color: #555; }
 .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 15px; border-radius: 5px; }
 
-/* --- ESTILOS DE FORMULARIO Y LOGIN --- */
+
 .login-container { display: flex; justify-content: center; align-items: center; height: 80vh; }
 .register-container { height: auto; padding: 40px 0; }
 .login-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); width: 100%; max-width: 380px; }
@@ -62,7 +62,7 @@ body {
 .form-control:focus { border-color: #003366; outline: none; box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.1); }
 .input-disabled { background-color: #eee; cursor: not-allowed; }
 
-/* --- BOTONES --- */
+
 .btn-primary { width: 100%; padding: 14px; background-color: #003366; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background-color 0.3s, transform 0.1s; text-decoration: none; display: inline-block; text-align: center; box-sizing: border-box; }
 .btn-primary:hover { background-color: #002244; }
 .btn-primary:active { transform: scale(0.98); }
@@ -81,13 +81,11 @@ body {
 .btn-filter { display: block; text-align: left; background-color: #f8f9fa; color: #333; border: 1px solid #ddd; text-decoration: none; padding: 8px 12px; border-radius: 5px; }
 .btn-filter:hover { background-color: #e2e6ea; }
 
-/* --- ESTILOS DEL FOOTER --- */
+
 .footer-container { background-color: #003366; color: white; padding: 20px 40px; display: flex; justify-content: space-between; margin-top: 50px; font-size: 14px; line-height: 1.6; }
 .footer-right { text-align: right; }
 
-/* =========================================
-   PÁGINA DE INICIO (HERO Y CUADRÍCULA)
-   ========================================= */
+
 .hero-header { text-align: center; padding: 40px 0; }
 .hero-title { font-size: 2.5em; margin-bottom: 10px; }
 .hero-subtitle { font-size: 1.2em; color: #555; }
@@ -104,9 +102,7 @@ body {
 .puesto-titulo { color: #6c757d; font-size: 1rem; font-weight: 500; margin: 0 0 15px 0; }
 .puesto-salario { font-size: 1.1rem; color: #28a745; font-weight: bold; margin-bottom: 20px; }
 
-/* =========================================
-   VENTANAS EMERGENTES (MODALES)
-   ========================================= */
+
 .modal-fondo { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); align-items: center; justify-content: center; }
 .modal-fondo:target { display: flex; }
 .modal-contenido { background-color: #fff; padding: 30px; border-radius: 10px; width: 90%; max-width: 450px; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
@@ -114,9 +110,7 @@ body {
 .cerrar-modal:hover { color: #000; }
 .modal-info-box { background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
 
-/* =========================================
-   CLASES DE UTILIDAD (UTILITIES)
-   ========================================= */
+
 .text-center { text-align: center; }
 .text-left { text-align: left; }
 .text-right { text-align: right; }
@@ -156,9 +150,7 @@ body {
 .flex-1 { flex: 1; }
 .flex-2 { flex: 2; }
 
-/* =========================================
-   COMPONENTES ESPECÍFICOS LIMPIOS
-   ========================================= */
+
 .stat-card { padding: 40px; width: 250px; text-align: center; }
 .stat-icon { font-size: 50px; margin-bottom: 15px; }
 .highlight-card { border-top: 5px solid #28a745; text-align: center; }
@@ -174,9 +166,7 @@ body {
 .divider { border: 0; border-top: 1px solid #ddd; margin: 15px 0; }
 .link-back { color: #003366; text-decoration: none; font-weight: 600; display: inline-block; margin-bottom: 20px; }
 
-/* =========================================
-   ESTILOS FALTANTES (TARJETAS Y MODALES)
-   ========================================= */
+
 .btn-detalle {
     width: 100%;
     padding: 10px;
@@ -206,14 +196,12 @@ body {
 }
 .btn-postular:hover { background-color: #218838; }
 
-/* =========================================
-   NUEVOS ESTILOS (ÍCONO DE LOGIN)
-   ========================================= */
+
 .login-icon-container {
-    margin-bottom: 20px; /* Espacio debajo del ícono */
+    margin-bottom: 20px;
 }
 
 .login-icon {
-    font-size: 60px; /* Tamaño grande para el ícono */
-    color: #003366; /* Color principal azul oscuro */
+    font-size: 60px;
+    color: #003366;
 }

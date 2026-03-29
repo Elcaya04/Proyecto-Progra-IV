@@ -30,11 +30,11 @@ public class PuestoController {
     @Autowired
     private PuestoCaracteristicaRepository puestoCaracteristicaRepository;
 
-    // ---- BUSCADOR DE PUESTOS (Público y Privado) ----
+
     @GetMapping("/buscar-por-caracteristicas")
     public String buscarPuestos(@RequestParam(required = false) Long categoriaId, Model model, Principal principal) {
 
-        // 1. Navegación del árbol de categorías (Igual que en habilidades)
+
         List<Caracteristica> subcategorias;
         Caracteristica categoriaActual = null;
 
@@ -48,26 +48,25 @@ public class PuestoController {
         model.addAttribute("subcategorias", subcategorias);
         model.addAttribute("categoriaActual", categoriaActual);
 
-        // 2. Buscar los puestos según la categoría seleccionada
+
         List<Puesto> puestosEncontrados;
 
         if (categoriaId != null) {
-            // Filtrar puestos que piden específicamente esta característica
+
             List<PuestoCaracteristica> pcList = puestoCaracteristicaRepository.findByCaracteristicaId(categoriaId);
             puestosEncontrados = pcList.stream()
                     .map(PuestoCaracteristica::getPuesto)
-                    .filter(Puesto::getActivo) // Solo mostrar puestos activos
+                    .filter(Puesto::getActivo)
                     .distinct()
                     .collect(Collectors.toList());
         } else {
-            // Si no seleccionó nada, mostrar todos los activos
+
             puestosEncontrados = puestoRepository.findAll().stream()
                     .filter(Puesto::getActivo)
                     .collect(Collectors.toList());
         }
 
-        // 3. REGLA DE NEGOCIO: Filtrar Privados vs Públicos
-        // Si 'principal' es null, significa que es un visitante sin cuenta
+
         if (principal == null) {
             puestosEncontrados = puestosEncontrados.stream()
                     .filter(p -> "PUBLICO".equalsIgnoreCase(p.getTipo()))

@@ -16,7 +16,6 @@ public class Caracteristica {
 
     private String nombre;
 
-    // Relación jerárquica: una característica puede tener un padre
     @ManyToOne
     @JoinColumn(name = "padre_id")
     private Caracteristica padre;

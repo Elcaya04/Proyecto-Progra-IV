@@ -55,7 +55,6 @@ public class OferenteService {
     }
 
     public List<Oferente> buscarCandidatos(Long puestoId) {
-        // Por ahora retorna todos los aprobados, la lógica de coincidencia va después
         return oferenteRepository.findByEstado(1);
     }
 }

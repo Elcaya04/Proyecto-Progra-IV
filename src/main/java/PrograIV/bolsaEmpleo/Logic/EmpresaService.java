@@ -11,12 +11,12 @@ public class EmpresaService {
     @Autowired
     private EmpresaRepository empresaRepository;
 
-    // Listar todas las empresas pendientes de aprobación (estado = 0)
+
     public List<Empresa> listarPendientes() {
         return empresaRepository.findByEstado(0);
     }
 
-    // Aprobar una empresa: cambia estado a 1
+
     public void aprobar(String email) {
         Empresa empresa = empresaRepository.findById(email)
                 .orElseThrow(() -> new IllegalArgumentException("Empresa no encontrada"));
@@ -24,7 +24,7 @@ public class EmpresaService {
         empresaRepository.save(empresa);
     }
 
-    // Registrar una nueva empresa (llega con estado 0 por defecto)
+
     public void registrar(Empresa empresa) {
         if (empresaRepository.existsById(empresa.getEmail())) {
             throw new IllegalArgumentException("Ya existe una cuenta con ese correo");

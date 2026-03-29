@@ -22,6 +22,5 @@ public class PuestoCaracteristica {
     @JoinColumn(name = "caracteristica_id", nullable = false)
     private Caracteristica caracteristica;
 
-    // Nivel mínimo requerido (1 a 5)
     private Integer nivelRequerido;
 }

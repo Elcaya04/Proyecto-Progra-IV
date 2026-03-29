@@ -12,7 +12,7 @@ public class IndexController {
     @Autowired
     private PuestoService puestoService;
 
-    // Pantalla de Inicio (Muestra los 5 más recientes)
+
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("puestos", puestoService.listarUltimosPublicos());

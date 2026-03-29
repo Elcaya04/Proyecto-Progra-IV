@@ -13,15 +13,11 @@ public class OferenteCaracteristica {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne
     @JoinColumn(name = "oferente_id", nullable = false)
     private Oferente oferente;
-
     @ManyToOne
     @JoinColumn(name = "caracteristica_id", nullable = false)
     private Caracteristica caracteristica;
-
-    // Nivel real que tiene el oferente (1 a 5)
     private Integer nivel;
 }

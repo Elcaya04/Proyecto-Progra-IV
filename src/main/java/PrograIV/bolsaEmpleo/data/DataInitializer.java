@@ -8,7 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-@Component // Le dice a Spring: "Ejecuta esta clase cuando arranques"
+@Component
 public class DataInitializer implements CommandLineRunner {
 
     @Autowired
@@ -18,36 +18,36 @@ public class DataInitializer implements CommandLineRunner {
     private PuestoRepository puestoRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository; // Para poder guardar al Admin
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder; // El motor para encriptar claves
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
 
         System.out.println("Revisando datos iniciales...");
 
-        // 1. CREAR EL ADMINISTRADOR POR DEFECTO (Si no existe)
+
         if (usuarioRepository.findById("admin@una.cr").isEmpty()) {
             Usuario admin = new Usuario();
             admin.setEmail("admin@una.cr");
-            admin.setClave(passwordEncoder.encode("admin123")); // Encriptamos la clave
-            admin.setEstado(1); // 1 = Activo para que pueda entrar de inmediato
-            admin.setTipoUsuario("ADMIN"); // Rol de administrador
+            admin.setClave(passwordEncoder.encode("admin123"));
+            admin.setEstado(1);
+            admin.setTipoUsuario("ADMIN");
 
             usuarioRepository.save(admin);
-            System.out.println("✅ Administrador creado: admin@una.cr / Clave: admin123");
+            System.out.println(" Administrador creado: admin@una.cr / Clave: admin123");
         }
 
-        // 2. CREAR DATOS DE PRUEBA (Solo si la base de datos de puestos está vacía)
+
         if (puestoRepository.count() == 0) {
 
-            // Crear la Empresa
+
             Empresa empresa = new Empresa();
             empresa.setEmail("contacto@techcr.com");
-            empresa.setClave(passwordEncoder.encode("12345")); // ¡AHORA SÍ ESTÁ ENCRIPTADA!
-            empresa.setEstado(1); // Aprobada por defecto
+            empresa.setClave(passwordEncoder.encode("12345"));
+            empresa.setEstado(1);
             empresa.setTipoUsuario("EMPRESA");
             empresa.setNombre("Tech Solutions CR");
             empresa.setLocalizacion("San José, Costa Rica");
@@ -56,7 +56,7 @@ public class DataInitializer implements CommandLineRunner {
 
             empresaRepository.save(empresa);
 
-            // Crear Puestos de prueba
+
             Puesto p1 = new Puesto();
             p1.setDescripcion("Desarrollador Junior Java Spring Boot");
             p1.setSalario(850000.0);
@@ -74,7 +74,7 @@ public class DataInitializer implements CommandLineRunner {
             puestoRepository.save(p1);
             puestoRepository.save(p2);
 
-            System.out.println("✅ Datos de prueba (Empresa y Puestos) cargados con éxito!");
+            System.out.println(" Datos de prueba (Empresa y Puestos) cargados con éxito!");
         }
     }
 }
